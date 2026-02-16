@@ -1,59 +1,247 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_Laravel12_Notify
+```php
+Laravel 12 based project demonstrating Toast Notification System using Laravel Notify package.
+```
+# Step 1: Install Laravel 12 Create Project
+```php
+We create a fresh Laravel 12 project to implement Toast Notifications using Laravel Notify Package.
+```
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Run Command
+```php
+composer create-project laravel/laravel:^12.0 PHP_Laravel12_Notify
+```
 
-## About Laravel
+Move to Project Folder
+```php
+cd PHP_Laravel12_Notify
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Generate Application Key
+```php
+php artisan key:generate
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Step 2: Setup Database (.env File)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Open .env file and configure database:
+```php
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel12_notify
+DB_USERNAME=root
+DB_PASSWORD=
+```
+Run Default Migration
+```php
+php artisan migrate
+```
+# Step 3: Install Laravel Notify Package
 
-## Learning Laravel
+Laravel Notify is used for:
+```php
+- Success Toast Messages
+- Error Notifications
+- Warning Alerts
+- Info Notifications
+```
+Install Package
+```php
+composer require mckenziearts/laravel-notify
+```
+# Step 4: Publish Notify Configuration & Assets
+```php
+php artisan notify:install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+This command will:
+```php
+- Publish notify configuration file
+- Publish notify views
+- Register required assets
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Step 5: Clear Application Cache
+```php
+php artisan optimize:clear
+```
 
-## Laravel Sponsors
+# Step 6: Add Notify Component in Layout
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Open Breeze layout file
+```php
+resources/views/layouts/app.blade.php
+```
 
-### Premium Partners
+```php
+<!DOCTYPE html>
+@include('notify::components.notify')
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-## Contributing
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-## Code of Conduct
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gray-100">
+            @include('layouts.navigation')
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+            <!-- Page Heading -->
+            @isset($header)
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
 
-## Security Vulnerabilities
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
+        </div>
+         <x-notify::notify />
+         
+    </body>
+</html>
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+# Step 7: Create Test Notify Controller
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Create Controller
+```php
+php artisan make:controller TestNotifyController
+```
+
+Open File
+```php
+app/Http/Controllers/TestNotifyController.php
+```
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+class TestNotifyController extends Controller
+{
+    public function index()
+    {
+        notify()->success('This is a real banner notification');
+
+        return redirect()->back();
+    }
+}
+```
+
+
+# Step 8: Add Route
+
+Open
+```php
+routes/web.php
+```
+
+Add Route
+```php
+use App\Http\Controllers\TestNotifyController;
+```
+```php
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestNotifyController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/test-notify', [TestNotifyController::class, 'index'])
+    ->middleware('auth');
+require __DIR__.'/auth.php';
+```
+
+# Step 9: Authentication Setup (Laravel Breeze)
+
+Install Breeze for Login & Register system
+```php
+- composer require laravel/breeze --dev
+- php artisan breeze:install
+- npm install
+- npm run build
+- php artisan migrate
+```
+
+# Step 10: Run Laravel Project
+```php
+php artisan serve
+````
+
+Open Browser
+```php
+http://127.0.0.1:8000/register
+```
+<img width="1204" height="628" alt="image" src="https://github.com/user-attachments/assets/1b697327-b428-4c48-a2d8-448a8d207614" />
+
+```php
+http://127.0.0.1:8000/login
+```
+<img width="1235" height="629" alt="image" src="https://github.com/user-attachments/assets/b537f58c-4418-40d0-aa71-afa5a799013b" />
+
+```php
+http://127.0.0.1:8000/test-notify
+```
+<img width="1344" height="429" alt="image" src="https://github.com/user-attachments/assets/52d4e6ba-b3c2-489d-ae9c-b56954164f6a" />
+
+
+
+# Project Folder Structure
+```php
+PHP_Laravel12_Notify
+├── app
+│   └── Http
+│       └── Controllers
+│           └── TestNotifyController.php
+│
+├── resources
+│   └── views
+│       └── layouts
+│           └── app.blade.php
+│
+├── routes
+│   └── web.php
+│
+├── .env
+├── artisan
+```
+# Explanation
+```php
+- Toast Based Notification System
+- Session Driven Messages
+- Works with Redirects
+- Clean & Modern UI
+- Lightweight & Fast
+- Production Ready Implementation
+```
