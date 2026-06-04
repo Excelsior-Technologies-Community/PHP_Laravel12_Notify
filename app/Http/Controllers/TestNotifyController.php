@@ -6,7 +6,7 @@ class TestNotifyController extends Controller
 {
     public function index()
     {
-        notify()->success('This is a real banner notification');
+        notify()->success('Notify is working perfectly 🚀');
 
         return redirect()->back();
     }

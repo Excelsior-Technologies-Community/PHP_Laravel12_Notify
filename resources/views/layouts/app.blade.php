@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-@include('notify::components.notify')
-
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -25,41 +23,34 @@
 
         .glass-card {
             backdrop-filter: blur(15px);
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         .page-header {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .content-wrapper {
             padding: 30px;
         }
 
-        <style>.notify {
+        .notify {
             z-index: 99999 !important;
         }
 
         .notify .alert-success {
             background: #16a34a !important;
             color: white !important;
-            border-radius: 12px !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
+        .notify .alert-error,
         .notify .alert-danger {
             background: #dc2626 !important;
             color: white !important;
-            border-radius: 12px !important;
-        }
-
-        .notify .alert-warning {
-            background: #f59e0b !important;
-            color: black !important;
         }
 
         .notify .alert-info {
@@ -67,20 +58,24 @@
             color: white !important;
         }
 
+        .notify .alert-warning {
+            background: #f59e0b !important;
+            color: black !important;
+        }
+
         .welcome-card {
-            background: linear-gradient(135deg,
-                    rgba(99, 102, 241, 0.2),
-                    rgba(168, 85, 247, 0.2));
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));
             border-radius: 20px;
-            padding: 25px;
-            color: white;
+            padding: 20px;
             margin-bottom: 20px;
+            color: white;
         }
     </style>
 </head>
 
 <body class="text-gray-100">
+
+    @include('notify::components.notify')
 
     <div class="min-h-screen">
 
@@ -89,29 +84,23 @@
 
         {{-- Header --}}
         @isset($header)
-            <header class="page-header">
-                <div class="max-w-7xl mx-auto py-6 px-6">
-                    <div class="text-2xl font-bold text-white">
-                        {{ $header }}
-                    </div>
-                </div>
-            </header>
+        <header class="page-header">
+            <div class="max-w-7xl mx-auto py-6 px-6">
+                <h2 class="text-2xl font-bold text-white">
+                    {{ $header }}
+                </h2>
+            </div>
+        </header>
         @endisset
 
         {{-- Main Content --}}
         <main class="content-wrapper">
-
             <div class="max-w-7xl mx-auto">
 
-                {{-- Welcome Banner --}}
+                {{-- Welcome --}}
                 <div class="welcome-card">
-                    <h2 class="text-3xl font-bold mb-2">
-                        🚀 Laravel Notify Dashboard
-                    </h2>
-
-                    <p class="text-gray-300">
-                        Modern Dark UI with Toast Notifications
-                    </p>
+                    <h2 class="text-3xl font-bold">🚀 Laravel Notify Dashboard</h2>
+                    <p>Modern UI with Toast Notifications</p>
                 </div>
 
                 {{-- Page Content --}}
@@ -120,13 +109,12 @@
                 </div>
 
             </div>
-
         </main>
 
     </div>
 
+    {{-- IMPORTANT LINE --}}
     <x-notify::notify />
 
 </body>
-
 </html>

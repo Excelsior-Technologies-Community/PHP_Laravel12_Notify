@@ -35,6 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
 });
 
+Route::get('/test-notify', function () {
+    notify()->success('Test notification working!');
+    return redirect()->back();
+});
+
 Route::get('/test-notify', [TestNotifyController::class, 'index'])
     ->middleware('auth');
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
