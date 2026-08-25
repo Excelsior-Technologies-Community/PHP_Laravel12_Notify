@@ -19,27 +19,25 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
 Route::middleware('auth')->group(function () {
-
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-
     Route::get('/users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
 });
 
-Route::get('/test-notify', function () {
-    notify()->success('Test notification working!');
-    return redirect()->back();
+Route::middleware('auth')->prefix('notifications')->name('notifications.')->group(function () {
+    Route::get('/success', [TestNotifyController::class, 'successNotify'])->name('success');
+    Route::get('/error', [TestNotifyController::class, 'errorNotify'])->name('error');
+    Route::get('/warning', [TestNotifyController::class, 'warningNotify'])->name('warning');
+    Route::get('/info', [TestNotifyController::class, 'infoNotify'])->name('info');
+    Route::get('/history', [TestNotifyController::class, 'history'])->name('history');
+    Route::post('/history/mark-read/{id}', [TestNotifyController::class, 'markAsRead'])->name('mark.read');
+    Route::post('/history/mark-all-read', [TestNotifyController::class, 'markAllAsRead'])->name('mark.all.read');
+    Route::get('/upload', [TestNotifyController::class, 'uploadForm'])->name('upload.form');
+    Route::post('/upload', [TestNotifyController::class, 'uploadFile'])->name('upload');
 });
 
-Route::get('/test-notify', [TestNotifyController::class, 'index'])
-    ->middleware('auth');
 require __DIR__ . '/auth.php';

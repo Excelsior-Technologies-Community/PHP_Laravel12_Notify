@@ -42,24 +42,34 @@
             z-index: 99999 !important;
         }
 
-        .notify .alert-success {
+        .notify [class*="border-green-500"] {
             background: #16a34a !important;
             color: white !important;
         }
 
-        .notify .alert-error,
-        .notify .alert-danger {
+        .notify [class*="border-red-500"] {
             background: #dc2626 !important;
             color: white !important;
         }
 
-        .notify .alert-info {
+        .notify [class*="border-yellow-500"] {
+            background: #f59e0b !important;
+            color: black !important;
+        }
+
+        .notify [class*="border-blue-500"] {
             background: #2563eb !important;
             color: white !important;
         }
 
-        .notify .alert-warning {
-            background: #f59e0b !important;
+        .notify [class*="border-green-500"] svg,
+        .notify [class*="border-red-500"] svg,
+        .notify [class*="border-yellow-500"] svg,
+        .notify [class*="border-blue-500"] svg {
+            color: white !important;
+        }
+
+        .notify [class*="border-yellow-500"] svg {
             color: black !important;
         }
 
@@ -74,8 +84,6 @@
 </head>
 
 <body class="text-gray-100">
-
-    @include('notify::components.notify')
 
     <div class="min-h-screen">
 
